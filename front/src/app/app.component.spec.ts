@@ -7,17 +7,17 @@ import { expect } from '@jest/globals';
 import { AppComponent } from './app.component';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
+import { SessionService } from './services/session.service';
 
-const routerMock = {
-  navigate: jest.fn()
-}
 const sessionServiceMock = {
-  $isLogged: jest.fn()
+  $isLogged: jest.fn(),
+  logOut: jest.fn()
 }
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,19 +25,26 @@ describe('AppComponent', () => {
         AppComponent
       ],
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(
+          [{ 
+            path: '', 
+            component: AppComponent
+          },
+          { path: "**", redirectTo: "" }]
+        ),
         HttpClientModule,
         MatToolbarModule
       ],
       providers: [
         {
-          provide: Router,
-          useValue: routerMock,
+          provide: SessionService,
+          useValue: sessionServiceMock, // uses the mock
         },
-      ]
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
+    router = TestBed.inject(Router);
     component = fixture.componentInstance;
 
     fixture.detectChanges();
@@ -50,18 +57,27 @@ describe('AppComponent', () => {
   it('$isLogged returns true when the user has been authenticated', () => {
     sessionServiceMock.$isLogged.mockReturnValueOnce(of(true));
 
-    component.$isLogged;
-
-    expect(sessionServiceMock.$isLogged).toHaveBeenCalled();
-    expect(component.$isLogged).toBeTruthy();
+    component.$isLogged().subscribe((logged: boolean) => {
+      expect(sessionServiceMock.$isLogged).toHaveBeenCalled();
+      expect(logged).toBeTruthy();
+    });
   });
 
   it('$isLogged returns false when the user has not been authenticated', () => {
     sessionServiceMock.$isLogged.mockReturnValueOnce(of(false));
 
-    component.$isLogged;
+    component.$isLogged().subscribe((logged: boolean) => {
+      expect(sessionServiceMock.$isLogged).toHaveBeenCalled();
+      expect(logged).toBeFalsy();
+    });
+  });
 
-    expect(sessionServiceMock.$isLogged).toHaveBeenCalled();
-    expect(component.$isLogged).toBeFalsy();
+  it('logout should properly redirect user after login out', () => {
+    const routerNavigateSpy = jest.spyOn(router, 'navigate');
+
+    component.logout();
+
+    expect(sessionServiceMock.logOut).toBeCalledTimes(1);
+    expect(routerNavigateSpy).toBeCalledWith(['']);
   });
 });
