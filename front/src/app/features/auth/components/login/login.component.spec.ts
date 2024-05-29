@@ -119,10 +119,10 @@ describe('LoginComponent', () => {
     expect(authService.login).toHaveBeenCalledTimes(1);
     expect(mockSessionService.logIn).toHaveBeenCalledTimes(1);
     expect(routerNavigateSpy).toHaveBeenCalledWith(['/sessions']);
-    expect(component.onError).toBeFalsy();
+    expect(component.onError).toEqual(false);
   }));
 
-  it('submit returns false when the user has not been authenticated', () => {
+  it('submit should change onError to true when the user has not been authenticated', () => {
     const error = {
       status: 401,
       message: 'You are not logged in',
@@ -133,6 +133,6 @@ describe('LoginComponent', () => {
     component.submit();
 
     expect(authService.login).toHaveBeenCalledTimes(1);
-    expect(component.onError).toBeTruthy();
+    expect(component.onError).toEqual(true);
   });
 });

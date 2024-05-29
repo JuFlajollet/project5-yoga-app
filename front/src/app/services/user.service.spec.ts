@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { expect } from '@jest/globals';
 
 import { UserService } from './user.service';
@@ -6,7 +6,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { User } from '../interfaces/user.interface';
 import { of } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 const pathService: string = 'api/user';
 
@@ -47,7 +46,7 @@ describe('UserService', () => {
   });
 
   it('getById should return a response body containing the user linked to the id', () => {
-    service.getById('1').subscribe((user: User) => {
+    service.getById(mockId).subscribe((user: User) => {
       expect(user).toEqual(mockUser);
     });
 
@@ -59,12 +58,10 @@ describe('UserService', () => {
     req.flush({
       mockUser
     });
-
-    expect(service).toBeTruthy();
   });
 
   it('delete should return a response body after the deletion of user linked to the id', () => {
-    service.delete('1').subscribe(() => {
+    service.delete(mockId).subscribe(() => {
     });
 
     const req = httpTestingController.expectOne({
@@ -75,7 +72,5 @@ describe('UserService', () => {
     req.flush({
       mockEmptyResponse
     });
-
-    expect(service).toBeTruthy();
   });
 });

@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { SessionService } from 'src/app/services/session.service';
 
 import { MeComponent } from './me.component';
@@ -33,7 +33,7 @@ describe('MeComponent', () => {
     logOut: jest.fn()
   }
   const mockMatSnackBar = {
-    open: jest.fn()
+    open: jest.fn().mockReturnValue({})
   }
   const mockUser: User = {
     id: 1,
@@ -65,7 +65,8 @@ describe('MeComponent', () => {
         NoopAnimationsModule
       ],
       providers: [
-        { provide: SessionService, useValue: mockSessionService }
+        { provide: SessionService, useValue: mockSessionService },
+        { provide: MatSnackBar, useValue: mockMatSnackBar },
       ]
     }).compileComponents();
 
@@ -111,7 +112,6 @@ describe('MeComponent', () => {
   it('delete should logout when account has been deleted',  fakeAsync(() => {
     jest.spyOn(userService, 'delete').mockReturnValueOnce(of({}));
     
-    const openSnackBarSpy = jest.spyOn(mockMatSnackBar, 'open');
     const logoutSpy = jest.spyOn(mockSessionService, 'logOut');
     const routerNavigateSpy = jest.spyOn(router, 'navigate');
 
@@ -122,7 +122,7 @@ describe('MeComponent', () => {
     tick();
 
     expect(userService.delete).toBeCalledTimes(1);
-    //expect(openSnackBarSpy).toBeCalledTimes(1);
+    expect(mockMatSnackBar.open).toBeCalledTimes(1);
     expect(logoutSpy).toBeCalledTimes(1);
     expect(routerNavigateSpy).toHaveBeenCalledWith(['/']);
 

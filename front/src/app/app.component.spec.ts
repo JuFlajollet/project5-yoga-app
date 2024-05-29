@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { SessionService } from './services/session.service';
+import { NgZone } from '@angular/core';
 
 const sessionServiceMock = {
   $isLogged: jest.fn(),
@@ -18,6 +19,7 @@ describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let router: Router;
+  let ngZone: NgZone;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,6 +47,7 @@ describe('AppComponent', () => {
 
     fixture = TestBed.createComponent(AppComponent);
     router = TestBed.inject(Router);
+    ngZone = TestBed.inject(NgZone);
     component = fixture.componentInstance;
 
     fixture.detectChanges();
@@ -59,7 +62,7 @@ describe('AppComponent', () => {
 
     component.$isLogged().subscribe((logged: boolean) => {
       expect(sessionServiceMock.$isLogged).toHaveBeenCalled();
-      expect(logged).toBeTruthy();
+      expect(logged).toEqual(true);
     });
   });
 
@@ -68,14 +71,16 @@ describe('AppComponent', () => {
 
     component.$isLogged().subscribe((logged: boolean) => {
       expect(sessionServiceMock.$isLogged).toHaveBeenCalled();
-      expect(logged).toBeFalsy();
+      expect(logged).toEqual(false);
     });
   });
 
   it('logout should properly redirect user after login out', () => {
     const routerNavigateSpy = jest.spyOn(router, 'navigate');
 
-    component.logout();
+    ngZone.run(() => {
+      component.logout();
+    });
 
     expect(sessionServiceMock.logOut).toBeCalledTimes(1);
     expect(routerNavigateSpy).toBeCalledWith(['']);

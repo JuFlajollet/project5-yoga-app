@@ -3,6 +3,7 @@ import { expect } from '@jest/globals';
 
 import { SessionService } from './session.service';
 import { SessionInformation } from '../interfaces/sessionInformation.interface';
+import { observable } from 'rxjs';
 
 describe('SessionService', () => {
   let service: SessionService;
@@ -14,6 +15,12 @@ describe('SessionService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('$isLogged() should return an observable of isLoggedSubject', () => {
+    service.$isLogged().subscribe((isLogged: boolean) => {
+      expect(isLogged).toEqual(false);
+    })
   });
 
   it('logIn should change isLogged to True and update SessionInformation with user', () => {
@@ -30,15 +37,13 @@ describe('SessionService', () => {
     service.logIn(sessionInfoMockSuccess);
 
     expect(service.sessionInformation).toBe(sessionInfoMockSuccess);
-    expect(service.isLogged).toBeTruthy();
-    //expect(service.).toHaveBeenCalled();
+    expect(service.isLogged).toEqual(true);
   });
 
   it('logOut should change isLogged to False and update SessionInformation with undefined', () => {
     service.logOut();
 
     expect(service.sessionInformation).toBe(undefined);
-    expect(service.isLogged).toBeFalsy();
-    //expect(service.$isLogged).toHaveBeenCalled();
+    expect(service.isLogged).toEqual(false);
   });
 });
