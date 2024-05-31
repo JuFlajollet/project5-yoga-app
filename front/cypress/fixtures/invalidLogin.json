@@ -1,0 +1,6 @@
+{
+    "path":"/api/auth/login",
+    "error":"Unauthorized",
+    "message":"Bad credentials",
+    "status":401
+}
