@@ -1,0 +1,10 @@
+{
+    "id": 1,
+    "name": "Test session update",
+    "date": "2024-06-03T00:00:00.000+00:00",
+    "teacher_id": 1,
+    "description": "Test session update",
+    "users": [],
+    "createdAt": "2024-05-26T01:08:34.9610714",
+    "updatedAt": "2024-06-01T01:08:35.1823554"
+}

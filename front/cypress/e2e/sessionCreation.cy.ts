@@ -13,6 +13,8 @@ describe('Session creation spec', () => {
     it('Session created successfully', () => {
         cy.contains('span', 'Create').click();
 
+        cy.url().should('include', '/sessions/create')
+
         cy.get(':button').should('be.disabled');
         cy.get('input[formControlName=name]').type("Test session creation")
         cy.get('input[formControlName=date]').type("2024-06-01")
@@ -26,10 +28,13 @@ describe('Session creation spec', () => {
         cy.get('button[type=submit]').click();
 
         cy.url().should('include', '/sessions')
+        cy.get('.mat-simple-snack-bar-content').contains("Session created !")
     })
 
     it('Display error if missing required form field', () => {
         cy.contains('span', 'Create').click();
+
+        cy.url().should('include', '/sessions/create')
 
         cy.get('input[formControlName=name]').click()
         cy.contains('span', 'Save').click();

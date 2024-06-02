@@ -26,8 +26,6 @@ describe('Account spec', () => {
     it('Access regular user account info', () => {
         cy.regularLogin()
 
-        cy.intercept({method: 'GET', url: '/api/session',},[]).as('session')
-
         cy.fixture('regularUser').then((user) => {
             cy.intercept({method: 'GET', url: '/api/user/2',}, user).as('user')
 

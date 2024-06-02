@@ -52,7 +52,6 @@ Cypress.Commands.add("regularLogin", () => {
     })
 
     cy.url().should('include', '/sessions')
-    cy.contains('span', 'Logout').should('exist')
 })
 
 Cypress.Commands.add("adminLogin", () => {
@@ -65,5 +64,4 @@ Cypress.Commands.add("adminLogin", () => {
     })
   
     cy.url().should('include', '/sessions')
-    cy.contains('span', 'Logout').should('exist')
 })
