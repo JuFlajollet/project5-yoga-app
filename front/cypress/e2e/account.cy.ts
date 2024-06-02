@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 describe('Account spec', () => {
     beforeEach(() => {
         cy.intercept({method: 'GET', url: '/api/session',},[]).as('session')
@@ -6,18 +8,19 @@ describe('Account spec', () => {
     it('Access admin account info', () => {
         cy.adminLogin()
 
-        cy.contains('span', 'Account').click();
-
         cy.fixture('adminUser').then((user) => {
             cy.intercept({method: 'GET', url: '/api/user/1',}, user).as('user')
+            
+            cy.contains('span', 'Account').click()
+            
+            cy.get('h1').contains(`User information`)
+            cy.get('mat-card-content').contains(`Name: ${user.firstName} ${user.lastName.toUpperCase()}`)
+            cy.get('mat-card-content').contains(`Email: ${user.email}`)
+            cy.get('.my2').contains(`You are admin`)
+            cy.get('.p2').contains(`Create at: ${dayjs(user.createdAt).format("MMM DD, YYYY")}`)
+            cy.get('.p2').contains(`Last update: ${dayjs(user.updatedAt).format("MMM DD, YYYY")}`)
+            cy.get('.my2 :button').should('not.exist')
         })
-  
-        cy.get('h1').contains('User information');
-        cy.get('mat-card-content').contains('Name: Admin ADMIN');
-        cy.get('mat-card-content').contains('Email: yoga@studio.com');
-        cy.get('.my2').contains('You are admin');
-        cy.get('.p2').contains('Create at: May 29, 2024');
-        cy.get('.p2').contains('Last update: May 29, 2024');
     })
 
     it('Access regular user account info', () => {
@@ -25,17 +28,18 @@ describe('Account spec', () => {
 
         cy.intercept({method: 'GET', url: '/api/session',},[]).as('session')
 
-        cy.contains('span', 'Account').click();
-
         cy.fixture('regularUser').then((user) => {
             cy.intercept({method: 'GET', url: '/api/user/2',}, user).as('user')
+
+            cy.contains('span', 'Account').click()
+
+            cy.get('h1').contains('User information')
+            cy.get('mat-card-content').contains(`Name: ${user.firstName} ${user.lastName.toUpperCase()}`)
+            cy.get('mat-card-content').contains(`Email: ${user.email}`)
+            cy.get('.p2').contains(`Create at: ${dayjs(user.createdAt).format("MMM DD, YYYY")}`)
+            cy.get('.p2').contains(`Last update: ${dayjs(user.updatedAt).format("MMM DD, YYYY")}`)
+            cy.get('.my2 :button').should('exist')
+            cy.get('.my2 :button').contains('Detail')
         })
-  
-        cy.get('h1').contains('User information');
-        cy.get('mat-card-content').contains('Name: Test TEST');
-        cy.get('mat-card-content').contains('Email: test@gmail.com');
-        cy.get('.my2').contains('You are not admin');
-        cy.get('.p2').contains('Create at: May 29, 2024');
-        cy.get('.p2').contains('Last update: May 29, 2024');
     })
-});
+})

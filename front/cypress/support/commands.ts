@@ -45,14 +45,11 @@
 Cypress.Commands.add("regularLogin", () => {
     cy.visit('/login')
 
-    cy.intercept('POST', '/api/auth/login', {
-        body: {
-            fixture: 'regularLogin.json'
-        },
+    cy.fixture('regularLogin').then(login => {
+        cy.intercept('POST', '/api/auth/login', login)
+        cy.get('input[formControlName=email]').type(login.username)
+        cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
     })
-  
-    cy.get('input[formControlName=email]').type('test')
-    cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
 
     cy.url().should('include', '/sessions')
     cy.contains('span', 'Logout').should('exist')
@@ -61,20 +58,11 @@ Cypress.Commands.add("regularLogin", () => {
 Cypress.Commands.add("adminLogin", () => {
     cy.visit('/login')
 
-    cy.intercept('POST', '/api/auth/login', {
-        body: {
-            id: 1,
-            username: 'userName',
-            firstName: 'firstName',
-            lastName: 'lastName',
-            admin: true
-        },
-        //fixture: 'adminLogin.json'
-        //},
+    cy.fixture('adminLogin').then(login => {
+        cy.intercept('POST', '/api/auth/login', login)
+        cy.get('input[formControlName=email]').type(login.username)
+        cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
     })
-  
-    cy.get('input[formControlName=email]').type('yoga@studio.com')
-    cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
   
     cy.url().should('include', '/sessions')
     cy.contains('span', 'Logout').should('exist')
