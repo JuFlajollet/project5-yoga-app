@@ -1,10 +1,10 @@
 describe('Session creation spec', () => {
     beforeEach(() => {
         cy.fixture('sessions').then((sessions) => {
-            cy.intercept({method: 'GET', url: '/api/session',}, sessions).as('sessions')
+            cy.intercept({method: 'GET', url: '/api/session'}, sessions).as('sessions')
         })
         cy.fixture('teachers').then((teachers) => {
-            cy.intercept({method: 'GET', url: '/api/teacher',}, teachers).as('teachers')
+            cy.intercept({method: 'GET', url: '/api/teacher'}, teachers).as('teachers')
         })
 
         cy.adminLogin()
@@ -22,7 +22,7 @@ describe('Session creation spec', () => {
         cy.get('textarea[formControlName=description]').type("Test session creation")
 
         cy.fixture('createdSession').then((session) => {
-            cy.intercept({method: 'POST', url: '/api/session',}, session)
+            cy.intercept({method: 'POST', url: '/api/session',}, session).as('createdSession')
         })
 
         cy.get('button[type=submit]').click();

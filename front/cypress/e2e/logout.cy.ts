@@ -1,6 +1,6 @@
 describe('Logout spec', () => {
     beforeEach(() => {
-        cy.intercept({method: 'GET', url: '/api/session',},[]).as('session')
+        cy.intercept({method: 'GET', url: '/api/session'},[]).as('sessions')
 
         cy.regularLogin()
     });

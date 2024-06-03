@@ -1,13 +1,13 @@
 describe('Session deletion spec', () => {
     beforeEach(() => {
         cy.fixture('sessions').then((sessions) => {
-            cy.intercept({method: 'GET', url: '/api/session',}, sessions).as('sessions')
+            cy.intercept({method: 'GET', url: '/api/session'}, sessions).as('sessions')
         })
         cy.fixture('session').then((session) => {
-            cy.intercept({method: 'GET', url: '/api/session/1',}, session).as('session')
+            cy.intercept({method: 'GET', url: '/api/session/1'}, session).as('session')
         })
         cy.fixture('teacher').then((teacher) => {
-            cy.intercept({method: 'GET', url: '/api/teacher/1',}, teacher).as('teacher')
+            cy.intercept({method: 'GET', url: '/api/teacher/1'}, teacher).as('teacher')
         })
 
         cy.adminLogin()
@@ -18,7 +18,7 @@ describe('Session deletion spec', () => {
 
         cy.url().should('include', '/sessions/detail/1')
 
-        cy.intercept({method: 'DELETE', url: '/api/session/1',}, {statusCode: 200})
+        cy.intercept({method: 'DELETE', url: '/api/session/1',}, {statusCode: 200}).as('deletedSession')
 
         cy.contains('span', 'Delete').click();
 

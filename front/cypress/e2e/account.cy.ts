@@ -2,14 +2,14 @@ import dayjs from "dayjs";
 
 describe('Account spec', () => {
     beforeEach(() => {
-        cy.intercept({method: 'GET', url: '/api/session',},[]).as('session')
+        cy.intercept({method: 'GET', url: '/api/session'},[]).as('sessions')
     });
 
     it('Access admin account info', () => {
         cy.adminLogin()
 
         cy.fixture('adminUser').then((user) => {
-            cy.intercept({method: 'GET', url: '/api/user/1',}, user).as('user')
+            cy.intercept({method: 'GET', url: '/api/user/1'}, user).as('adminUser')
             
             cy.contains('span', 'Account').click()
             
@@ -27,7 +27,7 @@ describe('Account spec', () => {
         cy.regularLogin()
 
         cy.fixture('regularUser').then((user) => {
-            cy.intercept({method: 'GET', url: '/api/user/2',}, user).as('user')
+            cy.intercept({method: 'GET', url: '/api/user/2'}, user).as('regularUser')
 
             cy.contains('span', 'Account').click()
 

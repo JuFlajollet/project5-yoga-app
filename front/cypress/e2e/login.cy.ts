@@ -5,8 +5,8 @@ describe('Login spec', () => {
 
   it('Login successful', () => {
     cy.fixture('regularLogin').then((login) => {
-      cy.intercept({method: 'POST', url: '/api/auth/login'}, login).as('login')
-      cy.intercept({method: 'GET', url: '/api/session'},[]).as('session')
+      cy.intercept({method: 'POST', url: '/api/auth/login'}, login).as('validLogin')
+      cy.intercept({method: 'GET', url: '/api/session'},[]).as('sessions')
 
       cy.get('input[formControlName=email]').type(login.username)
       cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)

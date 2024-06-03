@@ -19,13 +19,13 @@ describe('Session modification spec', () => {
     })
 
     it('Session modified successfully', () => {
-        cy.get('input[formControlName=name]').type("Test session update")
-        cy.get('input[formControlName=date]').type("2024-06-01")
+        cy.get('input[formControlName=name]').clear().type("Test session update")
+        cy.get('input[formControlName=date]').clear().type("2024-06-01")
         cy.get('mat-select[formControlName=teacher_id]').click().get('mat-option').contains('Hélène THIERCELIN').click()
-        cy.get('textarea[formControlName=description]').type("Test session update")
+        cy.get('textarea[formControlName=description]').clear().type("Test session update")
     
         cy.fixture('updatedSession').then((session) => {
-            cy.intercept({method: 'PUT', url: '/api/session'}, session)
+            cy.intercept({method: 'PUT', url: '/api/session/1'}, session).as('updatedSession')
         })
 
         cy.get('button[type=submit]').click()
@@ -35,7 +35,7 @@ describe('Session modification spec', () => {
     })
 
     it('Display error if missing required form field', () => {
-        cy.get('input[formControlName=name]').type("")
+        cy.get('input[formControlName=name]').clear()
 
         cy.contains('span', 'Save').click()
 
