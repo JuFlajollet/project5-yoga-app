@@ -23,19 +23,17 @@ describe('Sessions spec', () => {
         })
     })
 
-    it('Display Create and Detail button if user is admin', () => {
+    it('Display Create and Edit button if user is admin', () => {
         cy.adminLogin()
 
-        cy.get('button[routerLink="create"]').should('exist')
-        cy.get('button[routerLink="[\'update\',1]"').should('exist')
-        cy.get('button[routerLink="[\'update\',2]"').should('exist')
+        cy.get(`button[routerLink="create"]`).should('exist')
+        cy.contains('button','Edit').should('exist')
     })
 
-    it('Absence of Create and Detail button if user is not admin', () => {
+    it('Absence of Create and Edit button if user is not admin', () => {
         cy.regularLogin()
 
-        cy.get('button[ng-reflect-router-link="create"]').should('not.exist')
-        cy.get('button[ng-reflect-router-link="update,1"]]').should('not.exist')
-        cy.get('button[ng-reflect-router-link="update,2"]]').should('not.exist')
+        cy.get(`button[routerLink="create"]`).should('not.exist')
+        cy.contains('button','Edit').should('not.exist')
     })
 })
