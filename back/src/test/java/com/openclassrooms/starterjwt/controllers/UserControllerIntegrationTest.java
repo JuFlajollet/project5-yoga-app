@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -52,19 +53,30 @@ public class UserControllerIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
-    //TODO: Implement following test
+    @Test
+    public void save_shouldReturnResponseBadRequest_whenInvalidFormatId() throws Exception {
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("test@gmail.com", "password");
 
-/*    @Test
+        this.mockMvc.perform(delete("/api/user/number").with(SecurityMockMvcRequestPostProcessors.authentication(authRequest)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void save_shouldReturnResponseUnauthorized_whenLoggedUserNotMatchRequestId() throws Exception {
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("test@gmail.com", "password");
+
+        this.mockMvc.perform(delete("/api/user/1").with(SecurityMockMvcRequestPostProcessors.authentication(authRequest)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void save_shouldReturnResponseOk_whenUserSuccessfullyDeleted() throws Exception {
-        Jwt.Builder jwtBuilder = Jwt.withTokenValue("token").header("alg", "none")
-                .subject("random")
-                .issuer("https://localhost/auth/realms/Test")
-                .claim("scope", "read");
-
-        Jwt jwt = jwtBuilder.build();
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("test@gmail.com", "password");
         
-        this.mockMvc.perform(delete("/api/user/1").with(SecurityMockMvcRequestPostProcessors.jwt().jwt(jwt)))
+        this.mockMvc.perform(delete("/api/user/2").with(SecurityMockMvcRequestPostProcessors.authentication(authRequest)))
                 .andDo(print())
                 .andExpect(status().isOk());
-    }*/
+    }
 }
