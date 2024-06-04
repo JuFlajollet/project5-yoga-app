@@ -3,7 +3,16 @@ import { expect } from '@jest/globals';
 
 import { SessionService } from './session.service';
 import { SessionInformation } from '../interfaces/sessionInformation.interface';
-import { observable } from 'rxjs';
+
+const sessionInfoMockSuccess: SessionInformation = {
+  token: 'test',
+  type: 'test',
+  id: 1,
+  username: 'test',
+  firstName: 'test',
+  lastName: 'test',
+  admin: false
+};
 
 describe('SessionService', () => {
   let service: SessionService;
@@ -24,16 +33,6 @@ describe('SessionService', () => {
   });
 
   it('logIn should change isLogged to True and update SessionInformation with user', () => {
-    const sessionInfoMockSuccess: SessionInformation = {
-      token: 'test',
-      type: 'test',
-      id: 1,
-      username: 'test',
-      firstName: 'test',
-      lastName: 'test',
-      admin: false
-    };
-
     service.logIn(sessionInfoMockSuccess);
 
     expect(service.sessionInformation).toBe(sessionInfoMockSuccess);

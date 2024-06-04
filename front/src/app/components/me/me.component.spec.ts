@@ -52,7 +52,7 @@ describe('MeComponent', () => {
         RouterTestingModule.withRoutes(
           [{ 
             path: '', 
-            component: LoginComponent
+            component: MeComponent
           },
           { path: "**", redirectTo: "" }]
         ),

@@ -21,7 +21,7 @@ const mockUser: User = {
   createdAt: new Date()
 }
 
-const mockEmptyResponse: HttpResponse<any> = new HttpResponse({body: of({}), status: 200 });
+const mockOkResponse: HttpResponse<any> = new HttpResponse({body: of({}), status: 200 });
 
 describe('UserService', () => {
   let service: UserService;
@@ -60,8 +60,9 @@ describe('UserService', () => {
     });
   });
 
-  it('delete should return a response body after the deletion of user linked to the id', () => {
-    service.delete(mockId).subscribe(() => {
+  it('delete should return a successful response body after the deletion of user linked to the id', () => {
+    service.delete(mockId).subscribe((response: HttpResponse<any>) => {
+      expect(response.ok).toBe(true);
     });
 
     const req = httpTestingController.expectOne({
@@ -70,7 +71,7 @@ describe('UserService', () => {
     });
 
     req.flush({
-      mockEmptyResponse
+      mockOkResponse
     });
   });
 });
