@@ -9,7 +9,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class UserControllerIntegrationTest {
+public class TeacherControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @BeforeEach
@@ -25,46 +24,30 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    public void findById_shouldReturnResponseEntityOk_whenUserExists() throws Exception {
-        this.mockMvc.perform(get("/api/user/1").with(SecurityMockMvcRequestPostProcessors.jwt()))
+    public void findById_shouldReturnResponseEntityOk_whenTeacherExists() throws Exception {
+        this.mockMvc.perform(get("/api/teacher/1").with(SecurityMockMvcRequestPostProcessors.jwt()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void findById_shouldReturnResponseEntityNotFound_whenUserNotExists() throws Exception {
-        this.mockMvc.perform(get("/api/user/55").with(SecurityMockMvcRequestPostProcessors.jwt()))
+    public void findById_shouldReturnResponseEntityNotFound_whenTeacherNotExists() throws Exception {
+        this.mockMvc.perform(get("/api/teacher/55").with(SecurityMockMvcRequestPostProcessors.jwt()))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void findById_shouldReturnResponseEntityBadRequest_whenIncorrectFormatId() throws Exception {
-        this.mockMvc.perform(get("/api/user/number").with(SecurityMockMvcRequestPostProcessors.jwt()))
+        this.mockMvc.perform(get("/api/teacher/number").with(SecurityMockMvcRequestPostProcessors.jwt()))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void save_shouldReturnResponseNotFound_whenUserNotFound() throws Exception {
-        this.mockMvc.perform(delete("/api/user/55").with(SecurityMockMvcRequestPostProcessors.jwt()))
-                .andDo(print())
-                .andExpect(status().isNotFound());
-    }
-
-    //TODO: Implement following test
-
-/*    @Test
-    public void save_shouldReturnResponseOk_whenUserSuccessfullyDeleted() throws Exception {
-        Jwt.Builder jwtBuilder = Jwt.withTokenValue("token").header("alg", "none")
-                .subject("random")
-                .issuer("https://localhost/auth/realms/Test")
-                .claim("scope", "read");
-
-        Jwt jwt = jwtBuilder.build();
-        
-        this.mockMvc.perform(delete("/api/user/1").with(SecurityMockMvcRequestPostProcessors.jwt().jwt(jwt)))
+    public void findAll_shouldReturnResponseOk() throws Exception {
+        this.mockMvc.perform(get("/api/teacher").with(SecurityMockMvcRequestPostProcessors.jwt()))
                 .andDo(print())
                 .andExpect(status().isOk());
-    }*/
+    }
 }
