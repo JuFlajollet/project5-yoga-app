@@ -7,7 +7,6 @@ import static org.assertj.core.util.DateUtil.now;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
 public class SessionTest {
 
     @Test
