@@ -26,13 +26,9 @@ describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
   let authService: AuthService;
   let router: Router;
-  let httpClient: HttpClient;
+  let sessionService: SessionService;
   let httpTestingController: HttpTestingController;
   let ngZone: NgZone;
-
-  const mockSessionService = {
-    logIn: jest.fn()
-  }
 
   const mockSessionInfoSuccess: SessionInformation = {
     token: 'test',
@@ -66,12 +62,7 @@ describe('LoginComponent', () => {
         ReactiveFormsModule
       ],
       providers: [
-        {
-          provide: SessionService,
-          useValue: mockSessionService,
-        },
-        FormBuilder, 
-        HttpClient
+        FormBuilder
       ]
     }).compileComponents();
     
@@ -80,7 +71,7 @@ describe('LoginComponent', () => {
     router = TestBed.inject(Router);
     ngZone = TestBed.inject(NgZone);
     authService = TestBed.inject(AuthService);
-    httpClient = TestBed.inject(HttpClient);
+    sessionService = TestBed.inject(SessionService);
     httpTestingController = TestBed.inject(HttpTestingController);
 
     fixture.detectChanges();
@@ -103,36 +94,45 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('submit returns true when the user has been authenticated', fakeAsync(() => {
+  it('submit returns true when the user has been authenticated', () => {
     updateForm('test@test.com','test');
 
-    jest.spyOn(authService, 'login').mockReturnValueOnce(of(mockSessionInfoSuccess));
-    jest.spyOn(httpClient, 'post').mockReturnValueOnce(of(mockSessionInfoSuccess));
     const routerNavigateSpy = jest.spyOn(router, 'navigate');
+    const authServiceLoginSpy = jest.spyOn(authService, 'login');
+    const sessionServiceLoginSpy = jest.spyOn(sessionService, 'logIn');
 
     ngZone.run(() => {
       component.submit();
     });
 
-    tick();
+    const reqAuth = httpTestingController.expectOne({
+      method: 'POST',
+      url : 'api/auth/login'
+    });
 
-    expect(authService.login).toHaveBeenCalledTimes(1);
-    expect(mockSessionService.logIn).toHaveBeenCalledTimes(1);
+    reqAuth.flush({
+      mockSessionInfoSuccess
+    });
+
+    expect(authServiceLoginSpy).toHaveBeenCalledTimes(1);
+    expect(sessionServiceLoginSpy).toHaveBeenCalledTimes(1);
     expect(routerNavigateSpy).toHaveBeenCalledWith(['/sessions']);
     expect(component.onError).toEqual(false);
-  }));
+  });
 
   it('submit should change onError to true when the user has not been authenticated', () => {
-    const error = {
-      status: 401,
-      message: 'You are not logged in',
-    }
-
-    jest.spyOn(authService, 'login').mockReturnValueOnce(throwError(() => error));
+    const authServiceLoginSpy = jest.spyOn(authService, 'login');
 
     component.submit();
 
-    expect(authService.login).toHaveBeenCalledTimes(1);
+    const reqAuth = httpTestingController.expectOne({
+      method: 'POST',
+      url : 'api/auth/login'
+    });
+
+    reqAuth.error(new ProgressEvent('You are not logged in'));
+
+    expect(authServiceLoginSpy).toHaveBeenCalledTimes(1);
     expect(component.onError).toEqual(true);
   });
 });

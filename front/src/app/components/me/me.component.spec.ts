@@ -12,10 +12,9 @@ import { UserService } from 'src/app/services/user.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user.interface';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from 'src/app/features/auth/components/login/login.component';
 import { NgZone } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('MeComponent', () => {
   let component: MeComponent;
@@ -23,7 +22,6 @@ describe('MeComponent', () => {
   let router: Router;
   let ngZone: NgZone;
   let userService: UserService;
-  let httpTestingController: HttpTestingController;
 
   const mockSessionService = {
     sessionInformation: {
@@ -57,7 +55,7 @@ describe('MeComponent', () => {
           { path: "**", redirectTo: "" }]
         ),
         MatSnackBarModule,
-        HttpClientTestingModule,
+        HttpClientModule,
         MatCardModule,
         MatFormFieldModule,
         MatIconModule,
@@ -75,7 +73,6 @@ describe('MeComponent', () => {
     router = TestBed.inject(Router);
     ngZone = TestBed.inject(NgZone);
     userService = TestBed.inject(UserService);
-    httpTestingController = TestBed.inject(HttpTestingController);
 
     fixture.detectChanges();
   });
