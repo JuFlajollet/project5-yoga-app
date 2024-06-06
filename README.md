@@ -65,7 +65,7 @@ Open your IDE and use maven with the following command to run all tests:
 
 > mvn clean test
 
-You can also create run configurations on a test class if you only want to run these specific tests.
+You can also create a run configuration on a test class if you only want to run its specific tests.
 
 ### Front e2e tests
 
@@ -75,7 +75,7 @@ Go to the root of the front app (project5-yoga-app/front) and open a terminal.
 
 Cypress should open and ask you which browser you want to use for your tests.
 
-![Cypress Homepage](src/img/cypress1.PNG)
+![Cypress Homepage](ressources/img/cypress1.PNG)
 
 Once chosen, go to the specs menu on the left and then you can select which e2e test you want to run.
 
