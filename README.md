@@ -8,7 +8,7 @@ The original source code comes from [this repository in the OpenClassrooms Stude
 
 ### Ressources
 
-## Postman collection
+#### Postman collection
 
 A Postman collection is available `ressources/postman/yoga.postman_collection.json`
 
@@ -16,7 +16,7 @@ Import can be done by following the documentation:
 
 https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman
 
-## MySQL
+#### MySQL
 
 SQL script for creating the schema is available `ressources/sql/script.sql`
 
@@ -49,6 +49,8 @@ TODO
 
 ### Front unit and integration tests
 
+Go to the root of the front app (project5-yoga-app/front) and open a terminal.
+
 If you want to run a single test file:
 
 > npx jest yourfile.ts 
@@ -67,7 +69,17 @@ You can also create run configurations on a test class if you only want to run t
 
 ### Front e2e tests
 
-TODO
+Go to the root of the front app (project5-yoga-app/front) and open a terminal.
+
+> npm run e2e
+
+Cypress should open and ask you which browser you want to use for your tests.
+
+![Cypress Homepage](src/img/cypress1.PNG)
+
+Once chosen, go to the specs menu on the left and then you can select which e2e test you want to run.
+
+![Cypress menus](ressources/img/cypress2.PNG)
 
 ## How to generate coverage tests
 
@@ -89,10 +101,13 @@ You can find the report in the target folder: `target/site/jacoco/index.html` by
 
 ### Front e2e tests
 
-Go to the root of the front app (project5-yoga-app/front) and run the following command in terminal:
+Go to the root of the front app (project5-yoga-app/front) and run the following commands in terminal:
 
+> npm run e2e
 > npm run e2e:coverage
 
 Results should show up in the terminal.
 
 You can find a more detailed report in the coverage folder `coverage/lcov-report/index.html` by opening the index.html file in a browser.
+
+(_If the coverage results seem low, you can try running e2e tests first through cypress so that the results are correctly updated._)
