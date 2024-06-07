@@ -29,7 +29,7 @@ _Requirements:_
 - [MySQL Database](https://dev.mysql.com/doc/mysql-getting-started/en/)
 - An IDE for Java ([Eclipse](https://eclipseide.org/)/[IntelliJ](https://www.jetbrains.com/idea/download/?section=windows)/etc.)
 
-### Setup DB
+#### Setup DB
 
 In my SQL command line (Or you can use a database tool like [DBeaver](https://dbeaver.io/)):
 
