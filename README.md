@@ -63,19 +63,19 @@ SQL script for creating the schema (the one used with SOURCE) is available there
 
 #### Setup and launch Front
 
-Clone the project (if you didn't do already):
+- Clone the project (if you didn't do already):
 
 > git clone https://github.com/JuFlajollet/project5-yoga-app
 
-Go inside front folder:
+- Go inside front folder:
 
 > cd front
 
-Install dependencies:
+- Install dependencies:
 
 > npm install
 
-Launch Front-end:
+- Launch Front-end:
 
 > npm run start;
 
