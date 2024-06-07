@@ -10,19 +10,15 @@ The original source code comes from [this repository in the OpenClassrooms Stude
 
 #### Postman collection
 
-A Postman collection is available `ressources/postman/yoga.postman_collection.json`
+A Postman collection is available there: `ressources/postman/yoga.postman_collection.json`
 
-Import can be done by following the documentation: 
+Import can be done by following this documentation: 
 
 https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman
 
 #### MySQL
 
-SQL script for creating the schema is available `ressources/sql/script.sql`
-
-By default the admin user account is:
-- login: yoga@studio.com
-- password: test!1234
+SQL script for creating the schema is available there: `ressources/sql/script.sql`
 
 ### Global Setup
 
@@ -35,15 +31,59 @@ _Requirements:_
 
 ### Setup DB
 
-TODO
+In my SQL command line (Or you can use a database tool like [DBeaver](https://dbeaver.io/)):
+
+> mysql> CREATE DATABASE test; 
+
+> mysql> USE test;
+
+> mysql> SOURCE /path/to/file.sql
+
+> mysql> CREATE USER 'user'@'localhost' IDENTIFIED BY '123456';
+
+> mysql> GRANT SELECT, INSERT, UPDATE, DELETE ON test . * TO 'user'@'localhost';
+
+You can change `user`, `password` or `database name` but you will have to change the `application.properties` in the back end project accordingly.
+
+SQL script for creating the schema (the one used with SOURCE) is available there: `ressources/sql/script.sql`
 
 #### Setup Back
 
-TODO
+- Clone the project (if you didn't do already):
 
-#### Setup Front
+> git clone https://github.com/JuFlajollet/project5-yoga-app
 
-TODO
+- Launch your preferred IDE and open the folder where you cloned the backend project.
+- Check if you have correct JDK version for project (Java 8) and Maven.
+- Download dependencies and build project through Maven:
+
+> mvn clean install
+
+- Run the application (`SpringBootSecurityJwtApplication.java`).
+
+#### Setup and launch Front
+
+Clone the project (if you didn't do already):
+
+> git clone https://github.com/JuFlajollet/project5-yoga-app
+
+Go inside front folder:
+
+> cd front
+
+Install dependencies:
+
+> npm install
+
+Launch Front-end:
+
+> npm run start;
+
+If you didn't install DB and launch the Back, you won't be able to go further than homepage, login and register.
+
+By default, the admin user account that you can use to connect is:
+- login: yoga@studio.com
+- password: test!1234
 
 ## How to run tests
 
@@ -104,6 +144,7 @@ You can find the report in the target folder: `target/site/jacoco/index.html` by
 Go to the root of the front app (project5-yoga-app/front) and run the following commands in terminal:
 
 > npm run e2e
+
 > npm run e2e:coverage
 
 Results should show up in the terminal.
