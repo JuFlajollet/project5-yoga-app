@@ -24,9 +24,9 @@ SQL script for creating the schema is available there: `ressources/sql/script.sq
 
 _Requirements:_
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [Node](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- [Node >= 16.10.0](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [OpenJDK8](https://openjdk.org/install/) or [Oracle JDK8](https://www.oracle.com/java/technologies/javase/javase8u211-later-archive-downloads.html)
-- [MySQL Database](https://dev.mysql.com/doc/mysql-getting-started/en/)
+- [MySQL Database >= 8.0](https://dev.mysql.com/doc/mysql-getting-started/en/)
 - An IDE for Java ([Eclipse](https://eclipseide.org/)/[IntelliJ](https://www.jetbrains.com/idea/download/?section=windows)/etc.)
 
 #### Setup DB
